@@ -1,7 +1,9 @@
 <template>
     <div class="wrapper">
         <div v-for="(day, i) in days" :key="'day-' + i" class="day">
-            {{ day }}
+            <div v-for="(hour, j) in endingHour - startingHour" :key="'hour-' + j">
+                {{ startingHour + hour - 1 }}:00
+            </div>
         </div>
     </div>
 </template>
@@ -10,7 +12,9 @@
 export default {
     data() {
         return {
-            days: []
+            days: [],
+            startingHour: 9,
+            endingHour: 17
         };
     },
 
