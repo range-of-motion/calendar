@@ -1,8 +1,9 @@
 <template>
     <div class="wrapper">
         <div v-for="(day, i) in days" :key="'day-' + i" class="day">
+            <div class="day-label">{{ day }}</div>
             <div v-for="(hour, j) in endingHour - startingHour" :key="'hour-' + j" class="hour">
-                <div class="label">{{ startingHour + hour - 1 }}:00</div>
+                <div class="hour-label">{{ (startingHour + hour - 1).toString().padStart(2, 0) }}:00</div>
                 <div class="appointments">
                     <div v-for="appointment in getAppointments(day, startingHour + hour - 1)" :key="'appointment-' + appointment.id" class="appointment">
                         {{ appointment.memo }}
@@ -81,12 +82,17 @@ export default {
     background: #FAFAFA;
 }
 
+.day-label {
+    padding: 8px;
+    text-align: center;
+}
+
 .hour {
     display: flex;
     padding: 8px;
 }
 
-.label {
+.hour-label {
     margin-right: 20px;
 }
 
