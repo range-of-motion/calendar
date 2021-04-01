@@ -1,15 +1,20 @@
 <template>
-    <div class="wrapper">
-        <div v-for="(day, i) in days" :key="'day-' + i" class="day">
-            <div class="day-label">{{ day }}</div>
-            <div v-for="(hour, j) in endingHour - startingHour" :key="'hour-' + j" class="hour" :data-datetime="day + ' ' + ((startingHour + hour - 1).toString().padStart(2, 0)) + ':00:00'">
-                <div class="hour-label">{{ (startingHour + hour - 1).toString().padStart(2, 0) }}:00</div>
-                <div class="appointments">
-                    <div v-for="appointment in getAppointments(day, startingHour + hour - 1)" :key="'appointment-' + appointment.id" class="appointment" draggable="true" :data-id="appointment.id">
-                        {{ appointment.memo }}
+    <div>
+        <div class="wrapper">
+            <div v-for="(day, i) in days" :key="'day-' + i" class="day">
+                <div class="day-label">{{ day }}</div>
+                <div v-for="(hour, j) in endingHour - startingHour" :key="'hour-' + j" class="hour" :data-datetime="day + ' ' + ((startingHour + hour - 1).toString().padStart(2, 0)) + ':00:00'">
+                    <div class="hour-label">{{ (startingHour + hour - 1).toString().padStart(2, 0) }}:00</div>
+                    <div class="appointments">
+                        <div v-for="appointment in getAppointments(day, startingHour + hour - 1)" :key="'appointment-' + appointment.id" class="appointment" draggable="true" :data-id="appointment.id">
+                            {{ appointment.memo }}
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="overlay" v-if="notification">
+            <div class="notification">{{ notification }}</div>
         </div>
     </div>
 </template>
@@ -23,7 +28,9 @@ export default {
             endingHour: 17,
 
             appointments: [],
-            draggingPayload: null
+            draggingPayload: null,
+
+            notification: null
         };
     },
 
@@ -115,7 +122,11 @@ export default {
                 axios.post('/api/appointments/' + id + '/update', {
                     scheduled_at: targetDateTime
                 }).then(() => {
-                    console.log('gg');
+                    this.notification = 'Successfully updated schedule';
+
+                    setTimeout(() => {
+                        this.notification = null;
+                    }, 1000 * 2);
                 });
             });
         });
@@ -169,5 +180,22 @@ export default {
 
 .appointment:hover {
     cursor: pointer;
+}
+
+.overlay {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.notification {
+    display: inline-flex;
+    padding: 8px 16px;
+    background: green;
+    color: #FFF;
+    opacity: 0.8;
+    border-radius: 8px;
 }
 </style>
