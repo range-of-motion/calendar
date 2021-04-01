@@ -9,4 +9,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/appointments', [AppointmentController::class, 'index']);
-Route::put('/appointments/{appointment}', [AppointmentController::class, 'update']);
+Route::post('/appointments/{appointment}/update', [AppointmentController::class, 'update']);

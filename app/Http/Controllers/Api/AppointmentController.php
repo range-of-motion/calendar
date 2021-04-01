@@ -16,13 +16,11 @@ class AppointmentController extends Controller
     public function update(Request $request, Appointment $appointment)
     {
         $request->validate([
-            'scheduled_at' => 'required|date_format:Y-m-d H:i:s',
-            'memo' => 'required|max:255'
+            'scheduled_at' => 'required|date_format:Y-m-d H:i:s'
         ]);
 
         $appointment->update([
-            'schedule_at' => $request->shceduled_at,
-            'memo' => $request->memo
+            'scheduled_at' => $request->scheduled_at
         ]);
 
         return $appointment;
